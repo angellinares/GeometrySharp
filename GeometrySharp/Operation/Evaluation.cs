@@ -569,5 +569,60 @@ namespace GeometrySharp.Operation
             }
             return SKL;
         }
+
+        /// <summary>
+        /// Determine the closest point on a NURBS surface to a given point. *This is an experimental method and not hightly reliable.*
+        /// </summary>
+        /// <param name="nurbsSurface">The NURBS surface</param>
+        /// <param name="pt">The point to which we're trying to locate the closest point on the surface</param>
+        /// <returns>The closest point on the surface, bounded by the parametric range of the surface</returns>
+        public static Vector3 RationalSurfaceClosestPoint(NurbsSurface nurbsSurface, Vector3 pt)
+        {
+            #region Description
+            //For surfaces, we try to minimize the following:
+            //
+            //f = Su(u,v) * r = 0
+            //g = Sv(u,v) * r = 0
+            //
+            //  where r = S(u,v) - P
+            //
+            // Again, this requires newton iteration, but this time our objective function is vector valued
+            //
+            //    J d = k
+            //
+            //      d =   [ u* - u, v* - v ]
+            //		k = - [ f(u,v), g(u,v) ]
+            //		J =
+            //          |Su|^2   +  Suu * r       Su*Sv  +  Suv * r
+            //		     Su*Sv   +  Svu * r      |Sv|^2  +  Svv * r
+            //
+            //
+            // 	we have similar halting conditions:
+            //
+            //  point coincidence
+            //
+            //		|S(u,v) - p| < e1
+            //
+            //  cosine
+            //
+            //   |Su(u,v)*(S(u,v) - P)|
+            //   ----------------------  < e2
+            //   |Su(u,v)| |S(u,v) - P|
+            //
+            //   |Sv(u,v)*(S(u,v) - P)|
+            //   ----------------------  < e2
+            //   |Sv(u,v)| |S(u,v) - P|
+            //
+            //  1) first check 2 & 3
+            // 	2) if at least one of these is not, compute new value, otherwise halt
+            // 	3) ensure the parameter stays within range
+            // 			* if not closed, don't allow outside of range a-b
+            // 			* if closed (e.g. circle), allow to move back to beginning
+            //  4)  if |(u* - u)C'(u)| < e1, halt
+            //
+            #endregion
+            throw new NotImplementedException();
+
+        }
     }
 }

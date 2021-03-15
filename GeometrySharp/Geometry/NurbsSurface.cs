@@ -188,6 +188,15 @@ namespace GeometrySharp.Geometry
         public List<List<double>> Weights { get; }
         public List<List<Vector3>> HomogenizedPoints { get; }
 
+        public List<Vector3> Corners =>
+            new List<Vector3>()
+            {
+                Evaluation.SurfacePointAt(this, KnotsU.First(), KnotsV.First()),
+                Evaluation.SurfacePointAt(this, KnotsU.Last(), KnotsV.First()),
+                Evaluation.SurfacePointAt(this, KnotsU.Last(), KnotsV.Last()),
+                Evaluation.SurfacePointAt(this, KnotsU.First(), KnotsV.Last()),
+            };
+
         public bool Equals(NurbsSurface other){
             //var pts = this.ControlPoints;
             //var otherPts = other?.ControlPoints;
