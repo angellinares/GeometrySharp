@@ -34,6 +34,7 @@ namespace GeometrySharp.Core
     public class AdaptiveRefinementNode
     {
         public NurbsSurface NurbsSurface { get; set; }
+        public List<AdaptiveRefinementNode> Children { get; set; }
         public List<AdaptiveRefinementNode> Neighbors { get; set; }
         public List<Vector3> Corners { get; set; }
         public List<Vector3> MidPoints { get; set; }
@@ -44,6 +45,9 @@ namespace GeometrySharp.Core
         public double U05 { get; set; }
         public double V05 { get; set; }
 
+        public bool IsLeaf => this.Children == null;
+        public Vector3 Center => this.CenterPoint != null ? this.CenterPoint : EvaluateSurface(this.U05, this.V05);
+
         public AdaptiveRefinementNode(NurbsSurface nurbsSurface, List<Vector3> corners, List<AdaptiveRefinementNode> neighbors = null)
         {
             this.NurbsSurface = nurbsSurface;
@@ -52,7 +56,19 @@ namespace GeometrySharp.Core
 
             if (this.Corners == null)
                 this.Corners = nurbsSurface.Corners;
+            /// to be implemented ===========================================
 
+        }
+
+        public Vector3 EvaluateSurface(double u, double v, Vector3 srfPt = null)
+        {
+            var derivs = Evaluation.RationalSurfaceDerivatives(this.NurbsSurface, u, v);
+            var pt = derivs[0][0];
+            var norm = Vector3.Cross(derivs[0][1], derivs[1][0]);
+            if (!norm.IsZero())
+                norm = norm.Unitize();
+            ///return new Vector3();
+            /// to be implemented ===========================================
         }
 
     }
